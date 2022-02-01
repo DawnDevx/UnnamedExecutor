@@ -20,7 +20,7 @@ UE_Version = '1.0'
 Essentials = {
 	game:GetService("Players"),
 	game:GetService("CoreGui"),
-	game:GetService("CoreGui").FindFirstChild("RobloxGui")
+	game:GetService("CoreGui").FindFirstChild("RobloxGui"),
 	game:GetService("TweenService")
 }
 
