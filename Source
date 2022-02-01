@@ -419,9 +419,11 @@ UI_Utils:CreateTween(Bar, {Size = UDim2.new(0.97, 0, 0.7, 0)}, 1)
 
 wait(2.5)
 
+--[[
 UI_Utils:ShowNotitification("Welcome", "Thank you for using UnnamedExecutor, still in dev mode.", "Ok", function()
 	NotificationBackground:Destroy()
 end)
+]]--
 
 LoadingScreen.Visible = false
 
