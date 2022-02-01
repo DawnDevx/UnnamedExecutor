@@ -14,7 +14,7 @@ pcall(function()
 end)
 
 --:| Version |:--
-UE_Version = '1.10'
+UE_Version = '1.0'
 
 --:| Code |:--
 Essentials = {
