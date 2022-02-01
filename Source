@@ -383,7 +383,7 @@ function UI_Utils:ShowNotitification(Title, Message, ButtonText, ButtonFunction)
 	UICorner_2.CornerRadius = UDim.new(0.600000024, 0)
 	UICorner_2.Parent = OkBtn
 
-	OkBtn.MouseDown1Click:Connect(ButtonFunction)
+	OkBtn.MouseButton1Click:Connect(ButtonFunction)
 end
 
 Stats.Text = "Checking Version..."
