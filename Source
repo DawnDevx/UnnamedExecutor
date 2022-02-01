@@ -307,6 +307,9 @@ UIAspectRatioConstraint.AspectRatio = 2.059
 
 function UI_Utils:ShowNotitification(Title, Message, ButtonText, ButtonFunction)
 	ButtonFunction = ButtonFunction or function() NotificationBackground:Destroy() end
+	Title = Title or "Cannot Load: Error"
+	Message = Message or "Cannot load: Error | Report as soon as possible."
+	ButtonText = ButtonText or "Error!"
 	UE_Settings.CanExec = false
 
 	local NotificationBackground = Instance.new("Frame")
@@ -345,7 +348,7 @@ function UI_Utils:ShowNotitification(Title, Message, ButtonText, ButtonFunction)
 	Title.BackgroundTransparency = 1.000
 	Title.Size = UDim2.new(1, 0, 0.194630876, 0)
 	Title.Font = Enum.Font.SourceSansLight
-	Title.Text = "Title"
+	Title.Text = Title
 	Title.TextColor3 = Color3.fromRGB(255, 255, 255)
 	Title.TextScaled = true
 	Title.TextSize = 14.000
@@ -358,7 +361,7 @@ function UI_Utils:ShowNotitification(Title, Message, ButtonText, ButtonFunction)
 	Message.Position = UDim2.new(0, 0, 0.261744976, 0)
 	Message.Size = UDim2.new(1, 0, 0.456375837, 0)
 	Message.Font = Enum.Font.SourceSansLight
-	Message.Text = "Message Goes Here"
+	Message.Text = Message
 	Message.TextColor3 = Color3.fromRGB(255, 255, 255)
 	Message.TextScaled = true
 	Message.TextSize = 28.000
@@ -374,7 +377,7 @@ function UI_Utils:ShowNotitification(Title, Message, ButtonText, ButtonFunction)
 	OkBtn.Position = UDim2.new(0.5, 0, 0.86577177, 0)
 	OkBtn.Size = UDim2.new(0, 200, 0, 28)
 	OkBtn.Font = Enum.Font.Gotham
-	OkBtn.Text = "Button Text"
+	OkBtn.Text = ButtonText
 	OkBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
 	OkBtn.TextScaled = true
 	OkBtn.TextSize = 14.000
