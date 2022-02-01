@@ -305,9 +305,9 @@ Bar.ZIndex = 12
 UIAspectRatioConstraint.Parent = Main
 UIAspectRatioConstraint.AspectRatio = 2.059
 
-function UI_Utils:ShowNotitification(Title, Message, ButtonText, ButtonFunction)
+function UI_Utils:ShowNotitification(TitleText, Message, ButtonText, ButtonFunction)
 	ButtonFunction = ButtonFunction or function() NotificationBackground:Destroy() end
-	Title = Title or "Cannot Load: Error"
+	TitleText = TitleText or "Cannot Load: Error"
 	Message = Message or "Cannot load: Error | Report as soon as possible."
 	ButtonText = ButtonText or "Error!"
 	UE_Settings.CanExec = false
@@ -348,7 +348,7 @@ function UI_Utils:ShowNotitification(Title, Message, ButtonText, ButtonFunction)
 	Title.BackgroundTransparency = 1.000
 	Title.Size = UDim2.new(1, 0, 0.194630876, 0)
 	Title.Font = Enum.Font.SourceSansLight
-	Title.Text = Title
+	Title.Text = TitleText
 	Title.TextColor3 = Color3.fromRGB(255, 255, 255)
 	Title.TextScaled = true
 	Title.TextSize = 14.000
@@ -391,8 +391,6 @@ end
 
 Stats.Text = "Checking Version..."
 
-wait(2.5)
-
 loadstring(game:HttpGet("https://raw.githubusercontent.com/DawnDevx/UnnamedExecutor/main/Data.lua", true))()
 if UE_Current and UE_Current.Version ~= UE_Version then
 	UI_Utils:ShowNotitification("UE Version", "This version of UE is outdated, please get the corretc version.", "Exit", function()
@@ -407,6 +405,9 @@ UI_Utils:CreateTween(Bar, {Size = UDim2.new(0.652, 0, 0.7, 0)}, 1)
 wait(2.5)
 
 Stats.Text = "Checking patch..."
+
+wait(2.5)
+
 if UE_Current and UE_Current.Patched == true then
 	UI_Utils:ShowNotitification("UE Patch", "UnnamedExecutor is currently patched, please wait for the next update.", "Exit", function()
 		NotificationBackground:Destroy()
