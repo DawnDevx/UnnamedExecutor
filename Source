@@ -1,6 +1,7 @@
 --:| Load Secion |:--
-while not game:IsLoaded() or not game:GetService("CoreGui") or not game:GetService("Players").LocalPlayer or not game:GetService("Players").LocalPlayer.PlayerGui do
-	wait()
+while not game:IsLoaded() or not game:GetService("CoreGui") or not game:GetService("Players").LocalPlayer or
+    not game:GetService("Players").LocalPlayer.PlayerGui do
+    wait()
 end
 
 if UE_isLoaded then
@@ -13,13 +14,13 @@ pcall(function()
 end)
 
 --:| Version |:--
-UE_Version = '1.0'
+UE_Version = '1.10'
 
 --:| Code |:--
 Essentials = {
 	game:GetService("Players"),
 	game:GetService("CoreGui"),
-	game:GetService("CoreGui").FindFirstChild("RobloxGui"),
+	game:GetService("CoreGui"):FindFirstChild("RobloxGui"),
 	game:GetService("TweenService")
 }
 
@@ -30,32 +31,53 @@ UE_Settings = {
 }
 
 UE_LoadingCheckpoints = {
-	0.327, 0, 0.7, 0,
-	0.652, 0, 0.7, 0,
-	0.97, 0, 0.7, 0
+	{0.327, 0, 0.7, 0},
+	{0.652, 0, 0.7, 0},
+	{0.97, 0, 0.7, 0}
 }
 
 Parent = nil
 
+function UI_Utils:CreateRandomString()
+	local length = math.random(10,20)
+	local array = {}
+	for i = 1, length do
+		array[i] = string.char(math.random(32, 126))
+	end
+	return table.concat(array)
+end
+
+function UI_Utils:CreateTween(Object, Goal, Time)
+	local Time = Time or 1
+	local TweenInformation = TweenInfo.new(Time)
+	
+	local Tween = Essentials[4]:Create(Object, TweenInformation, Goal)
+	
+	Tween:Play()
+end
+
 if (not is_sirhurt_closure) and (syn and syn.protect_gui) then --Stole from Infinite Yield, not bothered.
-	local Main = Instance.new("ScreenGui")
-	Main.Name = randomString()
+	local sMain = Instance.new("ScreenGui")
+	sMain.Name = UI_Utils.CreateRandomString()
+	sMain.IgnoreGuiInset = true
 	syn.protect_gui(Main)
-	Main.Parent = COREGUI
-	PARENT = Main
+	Main.Parent = Essentials[2]
+	Parnet = Main
 elseif get_hidden_gui or gethui then
 	local hiddenUI = get_hidden_gui or gethui
-	local Main = Instance.new("ScreenGui")
-	Main.Name = randomString()
-	Main.Parent = hiddenUI()
-	PARENT = Main
-elseif COREGUI:FindFirstChild('RobloxGui') then
-	PARENT = COREGUI.RobloxGui
+	local sMain = Instance.new("ScreenGui")
+	sMain.Name = UI_Utils.CreateRandomString()
+	sMain.IgnoreGuiInset = true
+	sMain.Parent = hiddenUI()
+	Parent = sMain
+elseif Essentials[3]:FindFirstChild('RobloxGui') then
+	Parent = Essentials[3]
 else
-	local Main = Instance.new("ScreenGui")
-	Main.Name = randomString()
-	Main.Parent = COREGUI
-	PARENT = Main
+	local sMain = Instance.new("ScreenGui")
+	sMain.Name = UI_Utils.CreateRandomString()
+	sMain.IgnoreGuiInset = true
+	sMain.Parent = Essentials[2]
+	Parnet = sMain
 end
 
 local Main = Instance.new("Frame")
@@ -78,23 +100,6 @@ local Stats = Instance.new("TextLabel")
 local ProgressBox = Instance.new("Frame")
 local Bar = Instance.new("Frame")
 local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
-
-function UI_Utils:CreateRandomString()
-	local Min, Max, Final = ("a"):byte(), ("z"):byte(), ""
-
-	for i = 1, Array do
-		Final ..= string.char(math.random(Min, Max))
-	end
-end
-
-function UI_Utils:CreateTween(Object, Goal, Time)
-	local Time = Time or 1
-	local TweenInformation = TweenInfo.new(Time)
-	
-	local Tween = Essentials[4]:Create(Object, TweenInformation, Goal)
-	
-	Tween:Play()
-end
 
 Main.Name = UI_Utils:CreateRandomString()
 Main.Parent = Parent
@@ -300,13 +305,13 @@ Bar.AnchorPoint = Vector2.new(0, 0.5)
 Bar.BackgroundColor3 = Color3.fromRGB(0, 217, 36)
 Bar.BorderSizePixel = 0
 Bar.Position = UDim2.new(0.0156551003, 0, 0.489255756, 0)
-Bar.Size = UDim2.new(UE_LoadingCheckpoints[1])
+Bar.Size = UDim2.new(0.327, 0, 0.7, 0)
 Bar.ZIndex = 12
 
 UIAspectRatioConstraint.Parent = Main
 UIAspectRatioConstraint.AspectRatio = 2.059
 
-function UI_Utils:ShowNotitification(Title, Message, ButtonText, ButtonClickFunction)
+function UI_Utils:ShowNotitification(Title, Message, ButtonText)
 	UE_Settings.CanExec = false
 
 	local NotificationBackground = Instance.new("Frame")
@@ -387,22 +392,25 @@ function UI_Utils:ShowNotitification(Title, Message, ButtonText, ButtonClickFunc
 end
 
 Stats.Text = "Checking Version..."
-wait(1)
+
+wait(2.5)
+
 loadstring(game:HttpGet("https://raw.githubusercontent.com/DawnDevx/UnnamedExecutor/main/Data.lua", true))()
 if UE_Current and UE_Current.Version ~= UE_Version then
-	UI_Utils:ShowNotitification("UE Version", "This version of UE is outdated, please get the corretc version.", "Exit", function()
-		Main:Destroy()
-		Notification:Destroy()
-	end)
+	UI_Utils:ShowNotitification("UE Version", "This version of UE is outdated, please get the corretc version.", "Exit")
+	return
 end
-UI_Utils:CreateTween(Bar, {Size = UDim2.new(UE_LoadingCheckpoints[2])})
+
+UI_Utils:CreateTween(Bar, {Size = UDim2.new(0.652, 0, 0.7, 0)}, 1)
+
 Stats.Text = "Checking patch..."
-if UE_Current and UE_Current.Patched then
-	UI_Utils:ShowNotitification("UE Patch", "UnnamedExecutor is currently patched, please wair for a new update to realease." "Exit", function()
-		Main:Destroy()
-		Notification:Destroy()
-	end)
+if UE_Current and UE_Current.Patched == true then
+	UI_Utils:ShowNotitification("UE Patch", "UnnamedExecutor is currently patched, please wait for the next update.", "Exit")
+	return
 end
+
+wait(2.5)
+
 --[[
 LOADER MUST LOAD:
 1. Check Version
