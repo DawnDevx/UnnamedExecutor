@@ -1,7 +1,6 @@
 --:| Load Secion |:--
-while not game:IsLoaded() or not game:GetService("CoreGui") or not game:GetService("Players").LocalPlayer or
-	not game:GetService("Players").LocalPlayer.PlayerGui do
-		wait()
+while not game:IsLoaded() or not game:GetService("CoreGui") or not game:GetService("Players").LocalPlayer or not game:GetService("Players").LocalPlayer.PlayerGui do
+	wait()
 end
 
 if UE_isLoaded then
@@ -25,6 +24,7 @@ Essentials = {
 }
 
 UI_Utils = {}
+
 UE_Settings = {
 	CanExec = true
 }
@@ -403,3 +403,12 @@ if UE_Current and UE_Current.Patched then
 		Notification:Destroy()
 	end)
 end
+--[[
+LOADER MUST LOAD:
+1. Check Version
+2. Check if Patched
+3. Check if can find LocalPlayer
+1.Size = {0.327, 0},{0.7, 0}
+2.Size = {0.652, 0},{0.7, 0}
+3.Size = {0.97, 0},{0.7, 0}
+]]--
