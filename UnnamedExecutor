@@ -1,28 +1,22 @@
---:| Load Secion |:--
-while not game:IsLoaded() or not game:GetService("CoreGui") or not game:GetService("Players").LocalPlayer or
-	not game:GetService("Players").LocalPlayer.PlayerGui do
-		wait()
-end
+--[[
+-----------------------------------------------------------------------------------
+|																				  |
+|    _  _ __  _ __  _  __  __ __ ___ __    _____   _____ ____  _ _____ __  ___    |
+|   | || |  \| |  \| |/  \|  V  | __| _\  | __\ \_/ / __/ _/ || |_   _/__\| _ \   |
+|   | \/ | | ' | | ' | /\ | \_/ | _|| v | | _| > , <| _| \_| \/ | | || \/ | v /   |
+|    \__/|_|\__|_|\__|_||_|_| |_|___|__/  |___/_/ \_\___\__/\__/  |_| \__/|_|_\   |
+|																				  |
+-----------------------------------------------------------------------------------
+|KEY BINDS:																		  |
+|---------------																  |
+|O 																	Open And Close|
+|_cmds																 List Commands|
+|::More Coming Soon::															  |
+-----------------------------------------------------------------------------------
+|CREDITS:																		  |
+|---------------																  |
+|Devx_alt																		  |
+-----------------------------------------------------------------------------------
+]]--
 
-if UE_isLoaded then
-	error("Unnamed Executor is already running!", 0)
-	return
-end
-
-pcall(function()
-	getenv().UE_isLoaded = true
-end)
-
---:| Version |:--
-UE_Version = '1.0'
-
---:| Code |:--
-Essentials = {
-	game:GetService("Players"),
-	game:GetService("CoreGui"),
-	game:GetService("CoreGui").FindFirstChild("RobloxGui")
-}
-
-Parent = nil
-
-Main = Instance.new("ScreenGui")
+loadstring(game:HttpGet("LINK GOES HERE", true))()
