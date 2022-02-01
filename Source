@@ -25,7 +25,6 @@ Essentials = {
 }
 
 UI_Utils = {}
-
 UE_Settings = {
 	CanExec = true
 }
