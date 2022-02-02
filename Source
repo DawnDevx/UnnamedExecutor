@@ -1,22 +1,21 @@
---:| Load Secion |:--
+--| Unamed Executor |--
+-----------------------
+
+--| Loading Section
 while not game:IsLoaded() or not game:GetService("CoreGui") or not game:GetService("Players").LocalPlayer or
     not game:GetService("Players").LocalPlayer.PlayerGui do
     wait()
 end
 
-if UE_isLoaded then
-	error("Unnamed Executor is already running!", 0)
-	return
+if game:GetService("CoreGui"):FindFirstChild("UE_isLoaded") then
+	error("UnnamedExecutor is already loaded!", 0)
+	break
 end
 
-pcall(function()
-	getenv().UE_isLoaded = true
-end)
-
---:| Version |:--
+--| Version
 UE_Version = '1.0'
 
---:| Code |:--
+--| Code
 Essentials = {
 	game:GetService("Players"),
 	game:GetService("CoreGui"),
@@ -26,6 +25,8 @@ Essentials = {
 
 UI_Utils = {}
 
+UE_Loader = {}
+
 UE_Settings = {
 	CanExec = true
 }
@@ -33,12 +34,13 @@ UE_Settings = {
 Parent = nil
 
 function UI_Utils:CreateRandomString()
-	local length = math.random(10,20)
-	local array = {}
-	for i = 1, length do
-		array[i] = string.char(math.random(32, 126))
+	local Length = math.random(10, 20)
+	local Array = {}
+
+	for i = 1, Length do
+		Array[i] = string.char(math.random(32, 126))
 	end
-	return table.concat(array)
+	return table.concat(Array)
 end
 
 function UI_Utils:CreateTween(Object, Goal, Time)
@@ -56,7 +58,7 @@ if (not is_sirhurt_closure) and (syn and syn.protect_gui) then --Stole from Infi
 	sMain.IgnoreGuiInset = true
 	syn.protect_gui(Main)
 	Main.Parent = Essentials[2]
-	Parnet = Main
+	Parnet = sMain
 elseif get_hidden_gui or gethui then
 	local hiddenUI = get_hidden_gui or gethui
 	local sMain = Instance.new("ScreenGui")
@@ -74,6 +76,99 @@ else
 	Parnet = sMain
 end
 
+function UE_Loader:StartLoading(DelayTime, LoadInc)
+	DelayTime = DelayTime or 0
+	LoadInc = LoadInc or 1.5
+
+	if not Essentials[1]:FindFirstChild("UE_isLoaded") then
+		local Loading = Instance.new("StringValue", Essentials[1])
+		Loading.Name = "UE_isLoaded"
+	end
+
+	wait(DelayTime)
+
+	local Loader = Instance.new("Frame")
+	local Title = Instance.new("TextLabel")
+	local LoadingText = Instance.new("TextLabel")
+
+	Loader.Name = "Loader"
+	Loader.Parent = Parent
+	Loader.AnchorPoint = Vector2.new(0.5, 0.5)
+	Loader.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+	Loader.BackgroundTransparency = 0.700
+	Loader.BorderSizePixel = 0
+	Loader.Position = UDim2.new(0.5, 0, 0.498901099, 0)
+	Loader.Size = UDim2.new(1, 0, 1, 0)
+
+	Title.Name = "Title"
+	Title.Parent = Loader
+	Title.AnchorPoint = Vector2.new(0.5, 0.5)
+	Title.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	Title.BackgroundTransparency = 1.000
+	Title.Position = UDim2.new(0.513944268, 0, 0.283516496, 0)
+	Title.Size = UDim2.new(0.498007983, 0, 0.109890111, 0)
+	Title.Font = Enum.Font.GothamBold
+	Title.Text = "Unnamed Executor"
+	Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+	Title.TextScaled = true
+	Title.TextSize = 14.000
+	Title.TextWrapped = true
+
+	LoadingText.Name = "LoadingText"
+	LoadingText.Parent = Loader
+	LoadingText.AnchorPoint = Vector2.new(0.5, 0.5)
+	LoadingText.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	LoadingText.BackgroundTransparency = 1.000
+	LoadingText.Position = UDim2.new(0.513944268, 0, 0.362637371, 0)
+	LoadingText.Size = UDim2.new(0.498007983, 0, 0.0483516492, 0)
+	LoadingText.Font = Enum.Font.Gotham
+	LoadingText.Text = "Loading, Please wait..."
+	LoadingText.TextColor3 = Color3.fromRGB(255, 255, 255)
+	LoadingText.TextScaled = true
+	LoadingText.TextSize = 14.000
+	LoadingText.TextWrapped = true
+
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/DawnDevx/UnnamedExecutor/main/Data.lua", true))()
+
+	wait(LoadingInc)
+
+	LaodingText = "Checking your current UE verrsion..."
+	if UE_Current then
+		if UE_Current.Version ~= UE_Version then
+			LoadingText = "You do not own the correct verion of Unnamed Executor! Closing in 5..."
+			wait(5)
+			Essentials[1]:FindFirstChild("UE_isLoaded"):Destroy()
+			Parent:Destroy()
+		else
+			wait(LoadingInc)
+			LoadingText = "Checing if UE is patched..."
+			if UE_Current.Patched = true then
+				LoadingText = "Unnamed Executor is currently patched, please wait for an update. Closing in 5..."
+				wait(5)
+				Essentials[1]:FindFirstChild("UE_isLoaded"):Destroy()
+				Parent:Destroy()
+			else
+				wait(LoadingInc)
+				LoadingText = "Success!"
+				wait(1)
+				Loader:Destroy()
+			end
+		end
+	else
+		UE_Settings.CanExec = false
+		LoadingText = "Unexpected error, try checking your connection. Closing in 5..."
+		wait(5)
+		Essentials[1]:FindFirstChild("UE_isLoaded"):Destroy()
+		Parent:Destroy()
+	end
+
+	wait(LoadingInc)
+
+	Loader:Destroy()
+end
+
+UE_Loader:StartLoading(0, 1)
+
 local Main = Instance.new("Frame")
 local TopBar = Instance.new("Frame")
 local Title = Instance.new("TextLabel")
@@ -83,26 +178,21 @@ local UITextSizeConstraint = Instance.new("UITextSizeConstraint")
 local UIListLayout = Instance.new("UIListLayout")
 local Buttons = Instance.new("Frame")
 local ExitBtn = Instance.new("TextButton")
-local UIListLayout_2 = Instance.new("UIListLayout")
 local ClearBtn = Instance.new("TextButton")
 local SHBtn = Instance.new("TextButton")
 local Helpbtn = Instance.new("TextButton")
 local ExecBtn = Instance.new("TextButton")
-local LoadingScreen = Instance.new("Frame")
-local Title_2 = Instance.new("TextLabel")
-local Stats = Instance.new("TextLabel")
-local ProgressBox = Instance.new("Frame")
-local Bar = Instance.new("Frame")
+local UIListLayout_2 = Instance.new("UIListLayout")
 local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
 
-Main.Name = UI_Utils:CreateRandomString()
+Main.Name = "Main"
 Main.Parent = Parent
 Main.AnchorPoint = Vector2.new(0.5, 0.5)
 Main.BackgroundColor3 = Color3.fromRGB(54, 54, 54)
 Main.BorderSizePixel = 0
 Main.ClipsDescendants = true
-Main.Position = UDim2.new(0.442729086, 0, 0.478021979, 0)
-Main.Size = UDim2.new(0.588645399, 0, 0.630769312, 0)
+Main.Position = UDim2.new(0.411963612, 0, 0.51098907, 0)
+Main.Size = UDim2.new(0.527114511, 0, 0.56483525, 0)
 
 TopBar.Name = "TopBar"
 TopBar.Parent = Main
@@ -110,7 +200,7 @@ TopBar.AnchorPoint = Vector2.new(0.5, 0)
 TopBar.BackgroundColor3 = Color3.fromRGB(74, 74, 74)
 TopBar.BorderSizePixel = 0
 TopBar.ClipsDescendants = true
-TopBar.Position = UDim2.new(0.5, 0, 0, 0)
+TopBar.Position = UDim2.new(0.5, 0, -5.9372713e-08, 0)
 TopBar.Size = UDim2.new(1, 0, 0.101045288, 0)
 
 Title.Name = "Title"
@@ -119,7 +209,7 @@ Title.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Title.BackgroundTransparency = 1.000
 Title.Size = UDim2.new(1.00000012, 0, 1, 0)
 Title.Font = Enum.Font.SourceSansLight
-Title.Text = "Unnamed Executor v"
+Title.Text = "Unnamed Executor"
 Title.TextColor3 = Color3.fromRGB(255, 255, 255)
 Title.TextScaled = true
 Title.TextSize = 14.000
@@ -132,8 +222,8 @@ CmdBack.BackgroundColor3 = Color3.fromRGB(34, 34, 34)
 CmdBack.BackgroundTransparency = 1.000
 CmdBack.BorderSizePixel = 0
 CmdBack.ClipsDescendants = true
-CmdBack.Position = UDim2.new(0.498175174, 0, 0.48780483, 0)
-CmdBack.Size = UDim2.new(0.965328455, 0, 0.707316995, 0)
+CmdBack.Position = UDim2.new(0.498175204, 0, 0.48780477, 0)
+CmdBack.Size = UDim2.new(0.965328395, 0, 0.707316995, 0)
 
 CommandLine.Name = "CommandLine"
 CommandLine.Parent = CmdBack
@@ -164,8 +254,8 @@ Buttons.BackgroundColor3 = Color3.fromRGB(34, 34, 34)
 Buttons.BackgroundTransparency = 1.000
 Buttons.BorderSizePixel = 0
 Buttons.ClipsDescendants = true
-Buttons.Position = UDim2.new(0.497931868, 0, 0.917247295, 0)
-Buttons.Size = UDim2.new(0.965815067, 0, 0.102787435, 0)
+Buttons.Position = UDim2.new(0.497931838, 0, 0.917247295, 0)
+Buttons.Size = UDim2.new(0.965815067, 0, 0.102787428, 0)
 
 ExitBtn.Name = "ExitBtn"
 ExitBtn.Parent = Buttons
@@ -173,8 +263,8 @@ ExitBtn.AnchorPoint = Vector2.new(0.5, 0.5)
 ExitBtn.BackgroundColor3 = Color3.fromRGB(74, 74, 74)
 ExitBtn.BorderColor3 = Color3.fromRGB(74, 74, 74)
 ExitBtn.BorderSizePixel = 0
-ExitBtn.Position = UDim2.new(0.0998421833, 0, 0.49580726, 0)
-ExitBtn.Size = UDim2.new(0, 105, 0, 29)
+ExitBtn.Position = UDim2.new(0.0928135738, 0, 0.485194653, 0)
+ExitBtn.Size = UDim2.new(0, 94, 0, 25)
 ExitBtn.Font = Enum.Font.SourceSansLight
 ExitBtn.Text = "Exit"
 ExitBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -182,19 +272,14 @@ ExitBtn.TextScaled = true
 ExitBtn.TextSize = 14.000
 ExitBtn.TextWrapped = true
 
-UIListLayout_2.Parent = Buttons
-UIListLayout_2.FillDirection = Enum.FillDirection.Horizontal
-UIListLayout_2.SortOrder = Enum.SortOrder.LayoutOrder
-UIListLayout_2.Padding = UDim.new(0.0199999996, 0)
-
 ClearBtn.Name = "ClearBtn"
 ClearBtn.Parent = Buttons
 ClearBtn.AnchorPoint = Vector2.new(0.5, 0.5)
 ClearBtn.BackgroundColor3 = Color3.fromRGB(74, 74, 74)
 ClearBtn.BorderColor3 = Color3.fromRGB(74, 74, 74)
 ClearBtn.BorderSizePixel = 0
-ClearBtn.Position = UDim2.new(0.0998421833, 0, 0.49580726, 0)
-ClearBtn.Size = UDim2.new(0, 105, 0, 29)
+ClearBtn.Position = UDim2.new(0.298354179, 0, 0.485194653, 0)
+ClearBtn.Size = UDim2.new(0, 94, 0, 25)
 ClearBtn.Font = Enum.Font.SourceSansLight
 ClearBtn.Text = "Clear"
 ClearBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -208,8 +293,8 @@ SHBtn.AnchorPoint = Vector2.new(0.5, 0.5)
 SHBtn.BackgroundColor3 = Color3.fromRGB(74, 74, 74)
 SHBtn.BorderColor3 = Color3.fromRGB(74, 74, 74)
 SHBtn.BorderSizePixel = 0
-SHBtn.Position = UDim2.new(0.0998421833, 0, 0.49580726, 0)
-SHBtn.Size = UDim2.new(0, 105, 0, 29)
+SHBtn.Position = UDim2.new(0.503894806, 0, 0.485194653, 0)
+SHBtn.Size = UDim2.new(0, 94, 0, 25)
 SHBtn.Font = Enum.Font.SourceSansLight
 SHBtn.Text = "Script Hub"
 SHBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -223,8 +308,8 @@ Helpbtn.AnchorPoint = Vector2.new(0.5, 0.5)
 Helpbtn.BackgroundColor3 = Color3.fromRGB(74, 74, 74)
 Helpbtn.BorderColor3 = Color3.fromRGB(74, 74, 74)
 Helpbtn.BorderSizePixel = 0
-Helpbtn.Position = UDim2.new(0.0998421833, 0, 0.49580726, 0)
-Helpbtn.Size = UDim2.new(0, 105, 0, 29)
+Helpbtn.Position = UDim2.new(0.709435344, 0, 0.485194653, 0)
+Helpbtn.Size = UDim2.new(0, 94, 0, 25)
 Helpbtn.Font = Enum.Font.SourceSansLight
 Helpbtn.Text = "Help"
 Helpbtn.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -238,8 +323,8 @@ ExecBtn.AnchorPoint = Vector2.new(0.5, 0.5)
 ExecBtn.BackgroundColor3 = Color3.fromRGB(74, 74, 74)
 ExecBtn.BorderColor3 = Color3.fromRGB(74, 74, 74)
 ExecBtn.BorderSizePixel = 0
-ExecBtn.Position = UDim2.new(0.0998421833, 0, 0.49580726, 0)
-ExecBtn.Size = UDim2.new(0, 105, 0, 29)
+ExecBtn.Position = UDim2.new(0.914975822, 0, 0.485194653, 0)
+ExecBtn.Size = UDim2.new(0, 94, 0, 25)
 ExecBtn.Font = Enum.Font.SourceSansLight
 ExecBtn.Text = "Execute"
 ExecBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -247,193 +332,31 @@ ExecBtn.TextScaled = true
 ExecBtn.TextSize = 14.000
 ExecBtn.TextWrapped = true
 
-LoadingScreen.Name = "LoadingScreen"
-LoadingScreen.Parent = Main
-LoadingScreen.AnchorPoint = Vector2.new(0.5, 0.5)
-LoadingScreen.BackgroundColor3 = Color3.fromRGB(72, 72, 72)
-LoadingScreen.BorderSizePixel = 0
-LoadingScreen.Position = UDim2.new(0.50000006, 0, 0.49999994, 0)
-LoadingScreen.Size = UDim2.new(1.00000012, 0, 0.999999881, 0)
-LoadingScreen.ZIndex = 10
-
-Title_2.Name = "Title"
-Title_2.Parent = LoadingScreen
-Title_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Title_2.BackgroundTransparency = 1.000
-Title_2.Position = UDim2.new(0, 0, 0.219512135, 0)
-Title_2.Size = UDim2.new(0.999999881, 0, 0.174216032, 0)
-Title_2.ZIndex = 11
-Title_2.Font = Enum.Font.Gotham
-Title_2.Text = "Unnamed Executor"
-Title_2.TextColor3 = Color3.fromRGB(255, 255, 255)
-Title_2.TextScaled = true
-Title_2.TextSize = 14.000
-Title_2.TextWrapped = true
-
-Stats.Name = "Stats"
-Stats.Parent = LoadingScreen
-Stats.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Stats.BackgroundTransparency = 1.000
-Stats.Position = UDim2.new(0, 0, 0.609756052, 0)
-Stats.Size = UDim2.new(0.999999881, 0, 0.073170729, 0)
-Stats.ZIndex = 11
-Stats.Font = Enum.Font.Gotham
-Stats.Text = "Loading..."
-Stats.TextColor3 = Color3.fromRGB(211, 211, 211)
-Stats.TextScaled = true
-Stats.TextSize = 14.000
-Stats.TextWrapped = true
-
-ProgressBox.Name = "ProgressBox"
-ProgressBox.Parent = LoadingScreen
-ProgressBox.AnchorPoint = Vector2.new(0.5, 0.5)
-ProgressBox.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-ProgressBox.BorderSizePixel = 0
-ProgressBox.Position = UDim2.new(0.499153912, 0, 0.759581923, 0)
-ProgressBox.Size = UDim2.new(0.795262158, 0, 0.104529619, 0)
-ProgressBox.ZIndex = 12
-
-Bar.Name = "Bar"
-Bar.Parent = ProgressBox
-Bar.AnchorPoint = Vector2.new(0, 0.5)
-Bar.BackgroundColor3 = Color3.fromRGB(0, 217, 36)
-Bar.BorderSizePixel = 0
-Bar.Position = UDim2.new(0.0156551003, 0, 0.489255756, 0)
-Bar.Size = UDim2.new(0.327, 0, 0.7, 0)
-Bar.ZIndex = 12
+UIListLayout_2.Parent = Buttons
+UIListLayout_2.FillDirection = Enum.FillDirection.Horizontal
+UIListLayout_2.SortOrder = Enum.SortOrder.LayoutOrder
+UIListLayout_2.Padding = UDim.new(0.0199999996, 0)
 
 UIAspectRatioConstraint.Parent = Main
 UIAspectRatioConstraint.AspectRatio = 2.059
 
-function UI_Utils:ShowNotitification(TitleText, Message, ButtonText, ButtonFunction)
-	ButtonFunction = ButtonFunction or function() NotificationBackground:Destroy() end
-	TitleText = TitleText or "Cannot Load: Error"
-	Message = Message or "Cannot load: Error | Report as soon as possible."
-	ButtonText = ButtonText or "Error!"
-	UE_Settings.CanExec = false
-
-	local NotificationBackground = Instance.new("Frame")
-	local Notification = Instance.new("Frame")
-	local UICorner = Instance.new("UICorner")
-	local Title = Instance.new("TextLabel")
-	local Message = Instance.new("TextLabel")
-	local OkBtn = Instance.new("TextButton")
-	local UICorner_2 = Instance.new("UICorner")
-
-	NotificationBackground.Name = "NotificationBackground"
-	NotificationBackground.Parent = Parent
-	NotificationBackground.AnchorPoint = Vector2.new(0.5, 0.5)
-	NotificationBackground.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-	NotificationBackground.BackgroundTransparency = 0.700
-	NotificationBackground.BorderSizePixel = 0
-	NotificationBackground.Position = UDim2.new(0.5, 0, 0.498901099, 0)
-	NotificationBackground.Size = UDim2.new(1, 0, 1, 0)
-	NotificationBackground.ZIndex = 100
-
-	Notification.Name = "Notification"
-	Notification.Parent = NotificationBackground
-	Notification.AnchorPoint = Vector2.new(0.5, 0.5)
-	Notification.BackgroundColor3 = Color3.fromRGB(42, 42, 42)
-	Notification.BorderSizePixel = 0
-	Notification.Position = UDim2.new(0.5, 0, 0.476923078, 0)
-	Notification.Size = UDim2.new(0, 330, 0, 149)
-	Notification.ZIndex = 101
-
-	UICorner.CornerRadius = UDim.new(0.0599999987, 0)
-	UICorner.Parent = Notification
-
-	Title.Name = "Title"
-	Title.Parent = Notification
-	Title.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	Title.BackgroundTransparency = 1.000
-	Title.Size = UDim2.new(1, 0, 0.194630876, 0)
-	Title.Font = Enum.Font.SourceSansLight
-	Title.Text = TitleText
-	Title.TextColor3 = Color3.fromRGB(255, 255, 255)
-	Title.TextScaled = true
-	Title.TextSize = 14.000
-	Title.TextWrapped = true
-
-	Message.Name = "Message"
-	Message.Parent = Notification
-	Message.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	Message.BackgroundTransparency = 1.000
-	Message.Position = UDim2.new(0, 0, 0.261744976, 0)
-	Message.Size = UDim2.new(1, 0, 0.456375837, 0)
-	Message.Font = Enum.Font.SourceSansLight
-	Message.Text = Message
-	Message.TextColor3 = Color3.fromRGB(255, 255, 255)
-	Message.TextScaled = true
-	Message.TextSize = 28.000
-	Message.TextWrapped = true
-	Message.TextXAlignment = Enum.TextXAlignment.Left
-	Message.TextYAlignment = Enum.TextYAlignment.Top
-
-	OkBtn.Name = "OkBtn"
-	OkBtn.Parent = Notification
-	OkBtn.AnchorPoint = Vector2.new(0.5, 0.5)
-	OkBtn.BackgroundColor3 = Color3.fromRGB(23, 197, 10)
-	OkBtn.BorderSizePixel = 0
-	OkBtn.Position = UDim2.new(0.5, 0, 0.86577177, 0)
-	OkBtn.Size = UDim2.new(0, 200, 0, 28)
-	OkBtn.Font = Enum.Font.Gotham
-	OkBtn.Text = ButtonText
-	OkBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-	OkBtn.TextScaled = true
-	OkBtn.TextSize = 14.000
-	OkBtn.TextWrapped = true
-
-	UICorner_2.CornerRadius = UDim.new(0.600000024, 0)
-	UICorner_2.Parent = OkBtn
-
-	OkBtn.MouseButton1Click:Connect(ButtonFunction)
-end
-
-Stats.Text = "Checking Version..."
-
-loadstring(game:HttpGet("https://raw.githubusercontent.com/DawnDevx/UnnamedExecutor/main/Data.lua", true))()
-if UE_Current and UE_Current.Version ~= UE_Version then
-	UI_Utils:ShowNotitification("UE Version", "This version of UE is outdated, please get the corretc version.", "Exit", function()
-		NotificationBackground:Destroy()
-		Main:Destroy()
-	end)
-	return
-end
-
-UI_Utils:CreateTween(Bar, {Size = UDim2.new(0.652, 0, 0.7, 0)}, 1)
-
-wait(2.5)
-
-Stats.Text = "Checking patch..."
-
-wait(2.5)
-
-if UE_Current and UE_Current.Patched == true then
-	UI_Utils:ShowNotitification("UE Patch", "UnnamedExecutor is currently patched, please wait for the next update.", "Exit", function()
-		NotificationBackground:Destroy()
-		Main:Destroy()
-	end)
-	return
-end
-
-UI_Utils:CreateTween(Bar, {Size = UDim2.new(0.97, 0, 0.7, 0)}, 1)
-
-wait(2.5)
-
---[[
-UI_Utils:ShowNotitification("Welcome", "Thank you for using UnnamedExecutor, still in dev mode.", "Ok", function()
-	NotificationBackground:Destroy()
+ExitBtn.MouseButton1Down:Connect(function()
+	Essentials[1]:FindFirstChild("UE_isLoaded"):Destroy()
+	Parent:Destroy()
 end)
-]]--
 
-LoadingScreen.Visible = false
+ClearBtn:MosueButton1Down:Connect(function()
+	CommandLine.Text = ""
+end)
 
---[[
-LOADER MUST LOAD:
-1. Check Version
-2. Check if Patched
-3. Check if can find LocalPlayer
-1.Size = {0.327, 0},{0.7, 0}
-2.Size = {0.652, 0},{0.7, 0}
-3.Size = {0.97, 0},{0.7, 0}
-]]--
+ExecBtn:MosueButton1Down:Connect(function()
+	CommandLine.Text = "This feature is not out yet..."
+end)
+
+Helpbtn:MosueButton1Down:Connect(function()
+	CommandLine.Text = "This feature is not out yet..."
+end)
+
+SHBtn:MosueButton1Down:Connect(function()
+	CommandLine.Text = "This feature is not out yet..."
+end)
